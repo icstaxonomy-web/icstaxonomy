@@ -1,4 +1,4 @@
-# ICS Safety and Security Awareness Taxonomy Resources
+# ICS Safety and Security Awareness (IC3SA) Taxonomy Resources
 
 This repository contains supporting resources for the research work introducing the **ICS Safety and Security Awareness Taxonomy**, a hierarchical framework designed to structure and assess safety and cybersecurity awareness in Industrial Control Systems (ICS) environments.
 
