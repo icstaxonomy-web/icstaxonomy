@@ -1,0 +1,1396 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23F4511E' d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z'/></svg>">
+  <title>ICS Taxonomy</title>
+
+  <style type="text/css">
+/* ========================================
+   Google Form & Full Viewport Styles
+   ======================================== */
+   iframe {
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+    border: none;
+    z-index: 1;
+}
+
+/* ========================================
+   Modal Overlay & Content Styles
+   ======================================== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    border: none; /* Border removed as not needed */
+    width: 350%;
+    height: 120%;
+    margin: 0;
+}
+
+/* ========================================
+   Miscellaneous Container Styles
+   ======================================== */
+
+
+/* Graph container for Full HD style */
+#graphContainer {
+    position: relative;
+    overflow: hidden;
+    width: 7500px;
+    height: 1200px;
+    background: url("data:image/gif;base64,R0lGODlhCgAKAIAAAP///+fv3iH5BAEAAAAALAAAAAAKAAoAAAIRjI8By6zdHlxyVnjjdJt2UAAAOw==");
+    cursor: default;
+}
+
+/* ========================================
+   Button Styles
+   ======================================== */
+.button {
+    display: inline-block;
+    width: 200px;
+    padding: 20px;
+    margin: 5px;
+    font-size: 28px;
+    text-align: center;
+    background-color: #f4511e;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+/* Button inner span and arrow effect */
+.button span {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    top: 0;
+    right: -20px;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    right: 0;
+    opacity: 1;
+}
+
+/* Specific help button styling */
+#helpBtn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#newWindowBtn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+/* ========================================
+   Close Button Styles
+   ======================================== */
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* ========================================
+   Animation Styles
+   ======================================== */
+.flow {
+    stroke-dasharray: 8;
+    animation: dash 0.5s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -16;
+    }
+}
+
+
+
+  </style>
+
+<script type="text/javascript">
+    // Disable loading of the default resource bundle
+    var mxLoadResources = false;
+    // Set the base path for mxGraph assets on the CDN
+    mxBasePath = 'https://cdn.jsdelivr.net/npm/mxgraph/javascript';
+  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mxgraph/javascript/mxClient.js"></script>
+
+  
+
+
+  <script type="text/javascript">
+    var allEdges ,
+          edgesfa1, edgesfa2, edgesfa3, edgesfa4, edgesfa5, edgesfa6, edgesfa7, edgesfa8, edgesfa9, edgesfa10, edgesfa11,
+          edgessubfa11,edgessubfa12,edgessubfa13,edgessubfa14,
+          edgessubfa21,edgessubfa22,edgessubfa23,
+          edgessubfa31,edgessubfa32,edgessubfa33,
+          edgessubfa41,edgessubfa42,edgessubfa43,
+          edgessubfa51,edgessubfa52,edgessubfa53,
+          edgessubfa61,edgessubfa62,edgessubfa63,
+          edgessubfa71,edgessubfa72,edgessubfa73,
+          edgessubfa81,edgessubfa82,edgessubfa83,
+          edgessubfa91,edgessubfa92,edgessubfa93,
+          edgessubfa101,edgessubfa102,edgessubfa103,
+          edgessubfa111,edgessubfa112;
+   
+
+
+    
+    function main(container) {
+      // Creates the graph inside the given container
+      var graph = new mxGraph(container);
+      graph.setEnabled(false); // Prevent enabling events
+      graph.setCellsEditable(false);       // Prevent cell editing
+      graph.setCellsMovable(false);        // Prevent cell moving
+      graph.setCellsResizable(false);      // Prevent cell resizing
+      
+      var parent = graph.getDefaultParent();
+
+      graph.getModel().beginUpdate();
+      try {
+        // Focus Area labels (FA) with multi-line text
+        var fa1  = "𝐅𝐀 𝟏:\n𝐆𝐨𝐯𝐞𝐫𝐧𝐚𝐧𝐜𝐞,\n𝐑𝐢𝐬𝐤,\n𝐚𝐧𝐝 𝐂𝐨𝐦𝐩𝐥𝐢𝐚𝐧𝐜𝐞";
+        var fa2  = "𝐅𝐀 𝟐:\n𝐀𝐬𝐬𝐞𝐭 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭 &\n𝐂𝐨𝐧𝐟𝐢𝐠𝐮𝐫𝐚𝐭𝐢𝐨𝐧 𝐂𝐨𝐧𝐭𝐫𝐨𝐥";
+        var fa3  = "𝐅𝐀 𝟑:\n𝐈𝐂𝐒 𝐍𝐞𝐭𝐰𝐨𝐫𝐤 𝐀𝐫𝐜𝐡𝐢𝐭𝐞𝐜𝐭𝐮𝐫𝐞 &\n 𝐒𝐞𝐠𝐦𝐞𝐧𝐭𝐚𝐭𝐢𝐨𝐧";
+        var fa4  = "𝐅𝐀 𝟒:\n𝐀𝐜𝐜𝐞𝐬𝐬 𝐂𝐨𝐧𝐭𝐫𝐨𝐥:\n𝐀𝐮𝐭𝐡𝐞𝐧𝐭𝐢𝐜𝐚𝐭𝐢𝐨𝐧 &\n𝐀𝐮𝐭𝐡𝐨𝐫𝐢𝐳𝐚𝐭𝐢𝐨𝐧";
+        var fa5  = "𝐅𝐀 𝟓:\n𝐓𝐡𝐫𝐞𝐚𝐭 &\n𝐕𝐮𝐥𝐧𝐞𝐫𝐚𝐛𝐢𝐥𝐢𝐭𝐲 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭";
+        var fa6  = "𝐅𝐀 𝟔:\n𝐈𝐧𝐜𝐢𝐝𝐞𝐧𝐭 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞,\n𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 &\n𝐑𝐞𝐬𝐢𝐥𝐢𝐞𝐧𝐜𝐞";
+        var fa7  = "𝐅𝐀 𝟕:\n𝐏𝐞𝐫𝐬𝐨𝐧𝐧𝐞𝐥 𝐒𝐞𝐜𝐮𝐫𝐢𝐭𝐲 &\n𝐓𝐫𝐚𝐢𝐧𝐢𝐧𝐠";
+        var fa8  = "𝐅𝐀 𝟖:\n𝐒𝐮𝐩𝐩𝐥𝐲 𝐂𝐡𝐚𝐢𝐧 &\n𝐓𝐡𝐢𝐫𝐝-𝐏𝐚𝐫𝐭𝐲 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭";
+        var fa9  = "𝐅𝐀 𝟗:\n𝐏𝐡𝐲𝐬𝐢𝐜𝐚𝐥 &\n𝐄𝐧𝐯𝐢𝐫𝐨𝐧𝐦𝐞𝐧𝐭𝐚𝐥\n𝐒𝐞𝐜𝐮𝐫𝐢𝐭𝐲";
+        var fa10 = "𝐅𝐀 𝟏𝟎:\n𝐂𝐨𝐧𝐭𝐢𝐧𝐮𝐨𝐮𝐬 𝐈𝐦𝐩𝐫𝐨𝐯𝐞𝐦𝐞𝐧𝐭 &\n𝐂𝐨𝐦𝐩𝐥𝐢𝐚𝐧𝐜𝐞 𝐀𝐮𝐝𝐢𝐭𝐢𝐧𝐠";
+        var fa11 = "𝐅𝐀 𝟏𝟏:\n𝐇𝐚𝐳𝐚𝐫𝐝 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 &\n𝐀𝐜𝐜𝐢𝐝𝐞𝐧𝐭 𝐅𝐚𝐜𝐭𝐨𝐫𝐬";
+
+        // Vertices with empty labels (background rectangles)
+        var v2 = graph.insertVertex(parent, '2', "", 240, -1720, 4880, 223, "rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;");
+        var v3 = graph.insertVertex(parent, '3', "", 250, -1908.5, 4870, 158.5, "rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;");
+        var v4 = graph.insertVertex(parent, '4', "", 250, -2016, 4870, 80, "rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;");
+        var v5 = graph.insertVertex(parent, '5', "", 240, -1480, 4880, 223, "rounded=0;whiteSpace=wrap;html=1;fillColor=#fafafa;");
+
+        // Headings for Focus Areas and Sub FAs
+        var v6 = graph.insertVertex(parent, '6', "Focus Areas (FAs)", 120, -2016, 120, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v7 = graph.insertVertex(parent, '7', "Sub FAs", 120, -1908.5, 120, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+
+        // Topic vertices with explicit line breaks
+        var v8 = graph.insertVertex(parent, '8', "Security,\nCybersecurity\nand\nInformation Security\nTopics", 110, -1720, 120, 110, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v9 = graph.insertVertex(parent, '9', "Safety,\nOperational Safety\nMeasures\nTopics", 110, -1480, 120, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+
+        // FA 1 and its sub-topics
+        var v10 = graph.insertVertex(parent, '10', fa1, 260, -2006, 370, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v11 = graph.insertVertex(parent, '11', "1.1\nPolicy,\nStandards\n& Procedures", 260, -1880, 70, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v12 = graph.insertVertex(parent, '12', "1.2\nRisk \n Management\n&\nAssessment", 345, -1880, 75, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v13 = graph.insertVertex(parent, '13', "1.3\nRegulatory\n&\nCompliance \nAlignment", 435, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v14 = graph.insertVertex(parent, '14', "1.4\nRoles,\nResponsibilities\n&\nAccountability", 530, -1880, 90, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;");
+
+        var v15 = graph.insertVertex(parent, '15', "ICS \nsecurity \n policies \n&\n SOPs", 253.5, -1705, 76.5, 175, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v16 = graph.insertVertex(parent, '16', "Alignment with\nIEC 62443,\nNERC-CIP,\nNIST SP800-82", 340, -1705, 80, 175, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v17 = graph.insertVertex(parent, '17', "Vendor,\nContractor,\nSupplier\nCompliance\nChecks", 435, -1705, 85, 85, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v18 = graph.insertVertex(parent, '18', "Documentation \n&\nReporting for\nAudits", 435, -1605, 85, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v19 = graph.insertVertex(parent, '19', "Safety \n Policies\nAligned with\nISA/IEC 61511\n& EU-OSHA, \n HSE", 257, -1460, 75, 140, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v20 = graph.insertVertex(parent, '20', "Hazard ID &\nRisk \n Assessments\n(HAZOP, STPA)", 345, -1460, 85, 140, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v21 = graph.insertVertex(parent, '21', "Defining Clear\nSafety Roles", 540, -1460, 75, 140, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;");
+        var v125 = graph.insertVertex(parent, '125', "Defining Clear\nSecurity Roles", 550, -1705, 75, 175, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;");
+
+        // FA 2 and its sub-topics
+        var v22 = graph.insertVertex(parent, '22', fa2, 720, -2006, 320, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v23 = graph.insertVertex(parent, '23', "2.1\nICS Asset Inventory\n&\nClassification", 720, -1880, 100, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v24 = graph.insertVertex(parent, '24', "2.2\nSecure Configuration \n Management\n&\nHardening", 827, -1880, 113, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v25 = graph.insertVertex(parent, '25', "2.3\nLifecycle\n&\nPatch \nManagement", 950, -1880, 90, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v26 = graph.insertVertex(parent, '26', "Comprehensive\nICS \n Asset Inventories", 720, -1690, 100, 80, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v27 = graph.insertVertex(parent, '27', "Secure Baseline \n Configs,\nLockdown,\nWhitelisting", 830, -1690, 100, 80, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v28 = graph.insertVertex(parent, '28', "Firmware \n Authenticity,\nPatch Cycles,\nRollback", 950, -1690, 90, 80, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v29 = graph.insertVertex(parent, '29', "Secure Procurement\n&\nAuthorized Changes", 833.5, -1590, 100, 80, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v30 = graph.insertVertex(parent, '30', "Fail-safe \n Configurations,\nMaintained SIS", 835, -1443.5, 90, 70, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v31 = graph.insertVertex(parent, '31', "Safety Impact\nAssessment\nPre-changes", 835, -1360, 95, 72, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v32 = graph.insertVertex(parent, '32', "Device Aging\n&\nObsolescence\nIn Planning", 950, -1447, 90, 70, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 3 and its sub-topics
+        var v33 = graph.insertVertex(parent, '33', fa3, 1120, -2006, 360, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v34 = graph.insertVertex(parent, '34', "3.1\nNetwork \n Segmentation\n&\nZoning", 1120, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v35 = graph.insertVertex(parent, '35', "3.2\nSecure \nCommunication\nProtocols", 1230, -1880, 120, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v36 = graph.insertVertex(parent, '36', "3.3\nRemote Access\n&\nPerimeter \nSecurity", 1380, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v37 = graph.insertVertex(parent, '37', "Zones/Conduits \n for \n Segmentation\n(ISA-62443)", 1115, -1695, 85, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v38 = graph.insertVertex(parent, '38', "Layered Nets,\nDMZ,\nSecure Gateways", 1115, -1600, 90, 80, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v39 = graph.insertVertex(parent, '39', "ICS Specific \n Network Protocol\n[example:\nSecure Modbus,\n DNP3, \n OPC UA Sec]", 1230, -1695, 120, 105, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v40 = graph.insertVertex(parent, '40', "Protocol \n Whitelists,\nData Flow \nControl,\nRemote \n Restrictions", 1380, -1690, 80, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v41 = graph.insertVertex(parent, '41', "Network Supports\nSafety-critical \n Signal\nDelivery", 1120, -1452, 95, 115, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v42 = graph.insertVertex(parent, '42', "Redundant,\nFault-tolerant \nComm Paths", 1230, -1452, 120, 115, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v43 = graph.insertVertex(parent, '43', "Preventing Unsafe\nRemote Overrides", 1380, -1452, 95, 115, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v126 = graph.insertVertex(parent, '126', "ICS \nCommunication\nProtocol Hardening", 1230, -1577.5, 120, 65, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+
+        // FA 4 and its sub-topics
+        var v44 = graph.insertVertex(parent, '44', fa4, 1550, -2006, 320, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v45 = graph.insertVertex(parent, '45', "4.1\nIdentity\n&\nAccess \n Management\n(IAM)", 1550, -1880, 90, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v46 = graph.insertVertex(parent, '46', "4.2\nPrivileged \nAccess\n Management\n(PAM)", 1680, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v47 = graph.insertVertex(parent, '47', "4.3\nPhysical Access\nControl", 1800, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v48 = graph.insertVertex(parent, '48', "Role-based\n Permissions,\nMFA,\nTimeouts", 1550, -1690, 90, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v49 = graph.insertVertex(parent, '49', "Privileged Account\nMonitoring, \nPort Control", 1670, -1690, 100, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v50 = graph.insertVertex(parent, '50', "Physical Access\n(Badging, \n Biometrics)", 1800, -1690, 80, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v51 = graph.insertVertex(parent, '51', "Lockout/Tagout\nfor \n Safe Operations", 1550, -1450, 90, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v52 = graph.insertVertex(parent, '52', "Safe Authorization\nin \n Hazardous Areas", 1670, -1452, 100, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v53 = graph.insertVertex(parent, '53', "Align \nPhysical/Logical\nAccess \n with\n SIS", 1800, -1452, 90, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 5 and its sub-topics
+        var v54 = graph.insertVertex(parent, '54', fa5, 1950, -2006, 360, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v55 = graph.insertVertex(parent, '55', "5.1\nThreat Intelligence\n&\nContinuous \n Monitoring", 1950, -1880, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v56 = graph.insertVertex(parent, '56', "5.2\nVulnerability \nAssessment\n&\nPenetration \nTesting", 2075, -1880, 90, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v57 = graph.insertVertex(parent, '57', "5.3\nAnomaly\n&\nIntrusion \n Detection", 2200, -1880, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v58 = graph.insertVertex(parent, '58', "Continuous ICS\nMonitoring, \nAnomaly\nDetection", 1950, -1690, 95, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v59 = graph.insertVertex(parent, '59', "Inline Intrusion\nPrevention,\nBehavior Analysis", 2195, -1690, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v60 = graph.insertVertex(parent, '60', "Vulnerability \nAssessments\n(All Device Types)", 2075, -1690, 90, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v61 = graph.insertVertex(parent, '61', "Threat Intelligence \nFeeds,\nCentralized \nLogging", 1950, -1595, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v62 = graph.insertVertex(parent, '62', "Monitor \nSafety Events,\nIntegrate \n Near-misses", 1950, -1444.5, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v63 = graph.insertVertex(parent, '63', "Evaluate \nVulnerabilities\nCompromising \nFail-safes", 2075, -1444.5, 90, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v64 = graph.insertVertex(parent, '64', "Anomaly Detection\nfor \nUnsafe Trends", 2200, -1447, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 6 and its sub-topics
+        var v65 = graph.insertVertex(parent, '65', fa6, 2350, -2006, 400, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v66 = graph.insertVertex(parent, '66', "6.1\nIncident \n Response \n Planning\n&\nCoordination", 2350, -1880, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v67 = graph.insertVertex(parent, '67', "6.2\nDisaster \nRecovery\n&\nBusiness\n Continuity", 2481, -1880, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v68 = graph.insertVertex(parent, '68', "6.3\nCyber-Physical\nResilience \n Measures", 2595, -1880, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v69 = graph.insertVertex(parent, '69', "ICS IR Teams,\nDrills,\nSchedules", 2350, -1690, 105, 70, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v70 = graph.insertVertex(parent, '70', "Communication \n Playbooks,\nEscalation,\nForensics", 2350, -1605, 105, 85, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v71 = graph.insertVertex(parent, '71', "Network Isolation,\nSafe Shutdown,\nMalware Removal", 2481, -1690, 105, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v72 = graph.insertVertex(parent, '72', "Restore \nfrom \nBackups,\nRoot Cause,\nImprovements", 2600, -1690, 105, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v73 = graph.insertVertex(parent, '73', "Emergency \nShutdown,\nEvacuation \nProcedures", 2481, -1451, 105, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v74 = graph.insertVertex(parent, '74', "Safety Experts\nin IR \n& \nRecovery Planning", 2345.5, -1449.5, 105, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v75 = graph.insertVertex(parent, '75', "Safety Lessons\nin Continuous \n Improvement", 2610, -1454.5, 105, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 7 and its sub-topics
+        var v76 = graph.insertVertex(parent, '76', fa7, 2830, -2006, 340, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v77 = graph.insertVertex(parent, '77', "7.1\nSecurity \nAwareness\n&\nTraining \nPrograms", 2830, -1880, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v78 = graph.insertVertex(parent, '78', "7.2\nICS Operator\n&\nEngineer Skill \n Development", 2960, -1880, 97, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v79 = graph.insertVertex(parent, '79', "7.3\nInsider\nThreat \nManagement", 3080, -1880, 97, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v80 = graph.insertVertex(parent, '80', "Security Culture,\nAwareness Sessions,\nPhishing Training", 2830, -1690, 105, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v81 = graph.insertVertex(parent, '81', "Incident Reporting\nEncouragement,\nGood Practices", 2960, -1690, 97, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v82 = graph.insertVertex(parent, '82', "Scenario-based \n Drills,\nICS Certs,\nCross-training", 3080, -1690, 97, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v83 = graph.insertVertex(parent, '83', "Safety Training\n(Hazard ID, \nLogout,\nHMI Navigation)", 2830, -1444, 105, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v84 = graph.insertVertex(parent, '84', "ICS SOPs,\nCredential Policies,\nRemote Restrictions", 2965, -1447, 97, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v85 = graph.insertVertex(parent, '85', "Hands-on \n Workshops\nfor Operator \n Safety Skills", 3070, -1449.5, 97, 100, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 8 and its sub-topics
+        var v86 = graph.insertVertex(parent, '86', fa8, 3230, -2006, 400, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v87 = graph.insertVertex(parent, '87', "8.1\nVendor\n&\nContractor\nSecurity \n Assurance", 3230, -1880, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v88 = graph.insertVertex(parent, '88', "8.2\nProcurement\n&\nContractual \n Security\nRequirements", 3360, -1880, 80, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v89 = graph.insertVertex(parent, '89', "8.3\nProduct Integrity\n&\nAssurance", 3470, -1880, 110, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v90 = graph.insertVertex(parent, '90', "Vendor Assessment,\nAuthenticity Checks", 3220, -1690, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v91 = graph.insertVertex(parent, '91', "Secure Procurement,\nContractual Clauses", 3360, -1690, 105, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v92 = graph.insertVertex(parent, '92', "Third-party \n Risk Mgmt,\nTrusted Supply Chains", 3480, -1690, 110, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v93 = graph.insertVertex(parent, '93', "3rd-party Equipment\nMeets \nSafety Standards", 3230, -1449.5, 110, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v94 = graph.insertVertex(parent, '94', "Contractor Training,\nCompliance \nMonitoring", 3360, -1447, 100, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v95 = graph.insertVertex(parent, '95', "Safe Sourcing\nof \nSafety-critical Parts", 3480, -1444,110, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 9 and its sub-topics
+        var v96 = graph.insertVertex(parent, '96', fa9, 3730, -2006, 360, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v97 = graph.insertVertex(parent, '97', "9.1\nFacility Security\nControls", 3760, -1880, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v98 = graph.insertVertex(parent, '98', "9.2\nEnvironmental \n Protections\n&\nControls", 3880, -1880, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v99 = graph.insertVertex(parent, '99', "9.3\nEquipment \nTamper\n-Resistance\n&\nIntegrity", 3990, -1880, 95, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v100 = graph.insertVertex(parent, '100', "Facility Access,\nPerimeter Sensors,\nGuards", 3750, -1690, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v101 = graph.insertVertex(parent, '101', "Locked Enclosures,\nTamper-evident \n Seals", 3990, -1690, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v102 = graph.insertVertex(parent, '102', "Climate Regulation,\nSurge Protection,\nBackups", 3880, -1690, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v103 = graph.insertVertex(parent, '103', "Safe Emergency\nEvacuation Routes", 3750, -1442, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v104 = graph.insertVertex(parent, '104', "Proper Environment\nto \nPrevent Failures", 3880, -1442, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v105 = graph.insertVertex(parent, '105', "No Compromise\nof \nSafety Functions", 4005, -1442, 95, 110, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 10 and its sub-topics
+        var v106 = graph.insertVertex(parent, '106', fa10, 4135, -2006, 460, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v107 = graph.insertVertex(parent, '107', "10.1\nSecurity\n&\nSafety\nAudits and\n Assessments", 4135, -1880, 100, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v108 = graph.insertVertex(parent, '108', "10.2\nPerformance \n Measurement\n&\nMetrics", 4262, -1880, 100, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v109 = graph.insertVertex(parent, '109', "10.3\nContinuous \n Improvement\n&\nLessons Learned", 4400, -1880, 100, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        var v110 = graph.insertVertex(parent, '110', "Regular Audits\n(Internal, External,\n3rd-party)", 4135, -1690, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v111 = graph.insertVertex(parent, '111', "Security Metrics\n& \n Maturity Measures", 4262, -1690, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v112 = graph.insertVertex(parent, '112', "Post-incident \n Reviews,\nDocs, Reporting", 4400, -1695, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+        var v113 = graph.insertVertex(parent, '113', "Safety Audits,\nIncident Tracking,\nHazard Reviews", 4135, -1452, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v114 = graph.insertVertex(parent, '114', "Incorporate Safety\nLessons into Policies", 4260, -1450, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v115 = graph.insertVertex(parent, '115', "Continuous \n Improvement\nin \nSafety Systems", 4400, -1450, 100, 120, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;");
+
+        // FA 11 and its sub-topics
+        var v116 = graph.insertVertex(parent, '116', fa11, 4635, -2006, 460, 60, "rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;");
+        var v117 = graph.insertVertex(parent, '117', "11.1\nInadequate Enforcement\nof\nConstraints\n(Control Actions)", 4675, -1880, 175, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v118 = graph.insertVertex(parent, '118', "11.2\nInadequate Execution\nof\nControl Action", 4905, -1880, 145, 90, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+
+        var v119 = graph.insertVertex(parent, '119', "Protecting Process Models,\nSecure Feedback", 4670, -1705, 175, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v120 = graph.insertVertex(parent, '120', "Securing Sensors\n &\nCommunication Impacting Hazards", 4670, -1605, 175, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v121 = graph.insertVertex(parent, '121', "Aligning Config Mgmt\nwith Hazard Mitigation", 4905, -1705, 145, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v122 = graph.insertVertex(parent, '122', "STPA, HAZOP\nfor Hazard ID\n& Mitigation", 4670, -1450, 175, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+        var v123 = graph.insertVertex(parent, '123', "Ensuring Correct\nEnforcement of\nSafety Constraints", 4905, -1447, 145, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc;");
+        var v124 = graph.insertVertex(parent, '124', "Addressing Comm Flaws,\nActuator Fails,\nTiming Lags", 4670, -1360, 175, 75, "rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;");
+
+        // edgings FocusAreas 1 to 11
+        edgesfa1 = createEdges(graph, parent, v10, [v11, v12, v13, v14]);
+        edgesfa2 = createEdges(graph, parent, v22, [v23, v24, v25]);
+        edgesfa3 = createEdges(graph, parent, v33, [v34, v35, v36]);
+        edgesfa4 = createEdges(graph, parent, v44, [v45, v46, v47]);
+        edgesfa5 = createEdges(graph, parent, v54, [v55, v56, v57]);
+        edgesfa6 = createEdges(graph, parent, v65, [v66, v67, v68]);
+        edgesfa7 = createEdges(graph, parent, v76, [v77, v78, v79]);
+        edgesfa8 = createEdges(graph, parent, v86, [v87, v88, v89]);
+        edgesfa9 = createEdges(graph, parent, v96, [v97, v98, v99]);
+        edgesfa10 = createEdges(graph, parent, v106, [v107, v108, v109]);
+        edgesfa11 = createEdges(graph, parent, v116, [v117, v118]);
+
+
+        // edgings sub-FocusAreas 1.1 to 1.4
+        const offsetedgevalue = 50;
+        edgessubfa11 = createEdgeChain(graph, parent, v10, v11, [v15, v19], offsetedgevalue);
+        edgessubfa12 = createEdgeChain(graph, parent, v10, v12, [v16, v20], offsetedgevalue);
+        edgessubfa13 = createEdgeChain(graph, parent, v10, v13, [v17, v18], offsetedgevalue);
+        edgessubfa14 = createEdgeChain(graph, parent, v10, v14, [v125, v21], offsetedgevalue);
+
+        edgessubfa21 = createEdgeChain(graph,parent,v22, v23, [v26], offsetedgevalue);
+        edgessubfa22 = createEdgeChain(graph,parent,v22, v24, [v27, v29, v30, v31], offsetedgevalue);
+        edgessubfa23 = createEdgeChain(graph, parent, v22, v25, [v28, v32] , offsetedgevalue,  function(chainVertex, previousTarget, currentTarget, offset) {     return previousTarget ? previousTarget.geometry.x - offset : chainVertex.geometry.x - offset;  });
+
+        edgessubfa31 = createEdgeChain(graph,parent,v33, v34, [v37, v38, v41], offsetedgevalue);
+        edgessubfa32 = createEdgeChain(graph,parent,v33, v35, [v39, v126, v42], offsetedgevalue);
+        edgessubfa33 = createEdgeChain(graph, parent, v33, v36, [v40, v43], offsetedgevalue);
+       
+        edgessubfa41 = createEdgeChain(graph,parent,v44, v45, [v48, v51], offsetedgevalue);
+        edgessubfa42 = createEdgeChain(graph,parent,v44, v46, [v49, v52], offsetedgevalue);
+        edgessubfa43 = createEdgeChain(graph,parent,v44, v47, [v50, v53], offsetedgevalue);
+       
+        edgessubfa51 = createEdgeChain(graph,parent,v54, v55, [v58, v61, v62], offsetedgevalue);
+        edgessubfa52 = createEdgeChain(graph,parent,v54, v56, [v60, v63], offsetedgevalue);
+        edgessubfa53 = createEdgeChain(graph, parent, v54, v57, [v59, v64], offsetedgevalue);
+       
+        edgessubfa61 = createEdgeChain(graph,parent,v65, v66, [v69, v70, v74], offsetedgevalue);
+        edgessubfa62 = createEdgeChain(graph,parent,v65, v67, [v71, v73], offsetedgevalue);
+        edgessubfa63 = createEdgeChain(graph, parent, v65, v68, [v72, v75], offsetedgevalue);
+       
+        edgessubfa71 = createEdgeChain(graph,parent,v76, v77, [v80, v83], offsetedgevalue);
+        edgessubfa72 = createEdgeChain(graph,parent,v76, v78, [v81, v84], offsetedgevalue);
+        edgessubfa73 = createEdgeChain(graph, parent, v76, v79, [v82, v85], offsetedgevalue);
+       
+        edgessubfa81 = createEdgeChain(graph,parent,v86, v87, [v90, v93], offsetedgevalue);
+        edgessubfa82 = createEdgeChain(graph,parent,v86, v88, [v91, v94], offsetedgevalue);
+        edgessubfa83 = createEdgeChain(graph, parent, v86, v89, [v92, v95], offsetedgevalue);
+       
+        edgessubfa91 = createEdgeChain(graph,parent,v96, v97, [v100, v103], offsetedgevalue);
+        edgessubfa92 = createEdgeChain(graph,parent,v96, v98, [v102, v104], offsetedgevalue);
+        edgessubfa93 = createEdgeChain(graph, parent, v96, v99, [v101, v105], offsetedgevalue);
+       
+        edgessubfa101 = createEdgeChain(graph,parent,v106, v107, [v110, v113], offsetedgevalue);
+        edgessubfa102 = createEdgeChain(graph,parent,v106, v108, [v111, v114], offsetedgevalue);
+        edgessubfa103 = createEdgeChain(graph, parent, v106, v109, [v112, v115], offsetedgevalue);
+       
+        edgessubfa111 = createEdgeChain(graph,parent,v116, v117, [v119, v120, v122, v124], offsetedgevalue);
+        edgessubfa112 = createEdgeChain(graph,parent,v116, v118, [v121, v123], offsetedgevalue);
+
+        // edgings topics
+edgetopic011 = createEdgeChain(graph, parent, v10, v11, [v15], offsetedgevalue);
+edgetopic012 = createEdgeChain(graph, parent, v10, v11, [v19], offsetedgevalue);
+edgetopic013 = createEdgeChain(graph, parent, v10, v12, [v16], offsetedgevalue);
+edgetopic014 = createEdgeChain(graph, parent, v10, v12, [v20], offsetedgevalue);
+edgetopic015 = createEdgeChain(graph, parent, v10, v13, [v17], offsetedgevalue);
+edgetopic016 = createEdgeChain(graph, parent, v10, v13, [v18], offsetedgevalue);
+edgetopic017 = createEdgeChain(graph, parent, v10, v14, [v125], offsetedgevalue);
+edgetopic018 = createEdgeChain(graph, parent, v10, v14, [v21], offsetedgevalue);
+
+edgetopic021 = createEdgeChain(graph,parent,v22, v23, [v26], offsetedgevalue);
+edgetopic022 = createEdgeChain(graph,parent,v22, v24, [v27], offsetedgevalue);
+edgetopic023 = createEdgeChain(graph,parent,v22, v24, [v29], offsetedgevalue);
+edgetopic024 = createEdgeChain(graph,parent,v22, v24, [v30], offsetedgevalue);
+edgetopic025 = createEdgeChain(graph,parent,v22, v24, [v31], offsetedgevalue);
+edgetopic026 = createEdgeChain(graph, parent, v22, v25, [v28] , offsetedgevalue,  function(chainVertex, previousTarget, currentTarget, offset) {     return previousTarget ? previousTarget.geometry.x - offset : chainVertex.geometry.x - offset;  });
+edgetopic027 = createEdgeChain(graph, parent, v22, v25, [v32] , offsetedgevalue,  function(chainVertex, previousTarget, currentTarget, offset) {     return previousTarget ? previousTarget.geometry.x - offset : chainVertex.geometry.x - offset;  });
+
+edgetopic031 = createEdgeChain(graph,parent,v33, v34, [v37], offsetedgevalue);
+edgetopic032 = createEdgeChain(graph,parent,v33, v34, [v38], offsetedgevalue);
+edgetopic033 = createEdgeChain(graph,parent,v33, v34, [v41], offsetedgevalue);
+edgetopic034 = createEdgeChain(graph,parent,v33, v35, [v39], offsetedgevalue);
+edgetopic035 = createEdgeChain(graph,parent,v33, v35, [v126], offsetedgevalue);
+edgetopic036 = createEdgeChain(graph,parent,v33, v35, [v42], offsetedgevalue);
+edgetopic037 = createEdgeChain(graph, parent, v33, v36, [v40], offsetedgevalue);
+edgetopic038 = createEdgeChain(graph, parent, v33, v36, [v43], offsetedgevalue);
+
+edgetopic041 = createEdgeChain(graph,parent,v44, v45, [v48], offsetedgevalue);
+edgetopic042 = createEdgeChain(graph,parent,v44, v45, [v51], offsetedgevalue);
+edgetopic043 = createEdgeChain(graph,parent,v44, v46, [v49], offsetedgevalue);
+edgetopic044 = createEdgeChain(graph,parent,v44, v46, [v52], offsetedgevalue);
+edgetopic045 = createEdgeChain(graph,parent,v44, v47, [v50], offsetedgevalue);
+edgetopic046 = createEdgeChain(graph,parent,v44, v47, [v53], offsetedgevalue);
+
+edgetopic051 = createEdgeChain(graph,parent,v54, v55, [v58], offsetedgevalue);
+edgetopic052 = createEdgeChain(graph,parent,v54, v55, [v61], offsetedgevalue);
+edgetopic053 = createEdgeChain(graph,parent,v54, v55, [v62], offsetedgevalue);
+edgetopic054 = createEdgeChain(graph,parent,v54, v56, [v60], offsetedgevalue);
+edgetopic055 = createEdgeChain(graph,parent,v54, v56, [v63], offsetedgevalue);
+edgetopic056 = createEdgeChain(graph, parent, v54, v57, [v59], offsetedgevalue);
+edgetopic057 = createEdgeChain(graph, parent, v54, v57, [v64], offsetedgevalue);
+
+edgetopic061 = createEdgeChain(graph,parent,v65, v66, [v69], offsetedgevalue);
+edgetopic062 = createEdgeChain(graph,parent,v65, v66, [v70], offsetedgevalue);
+edgetopic063 = createEdgeChain(graph,parent,v65, v66, [v74], offsetedgevalue);
+edgetopic064 = createEdgeChain(graph,parent,v65, v67, [v71], offsetedgevalue);
+edgetopic065 = createEdgeChain(graph,parent,v65, v67, [v73], offsetedgevalue);
+edgetopic066 = createEdgeChain(graph, parent, v65, v68, [v72], offsetedgevalue);
+edgetopic067 = createEdgeChain(graph, parent, v65, v68, [v75], offsetedgevalue);
+
+edgetopic071 = createEdgeChain(graph,parent,v76, v77, [v80], offsetedgevalue);
+edgetopic072 = createEdgeChain(graph,parent,v76, v77, [v83], offsetedgevalue);
+edgetopic073 = createEdgeChain(graph,parent,v76, v78, [v81], offsetedgevalue);
+edgetopic074 = createEdgeChain(graph,parent,v76, v78, [v84], offsetedgevalue);
+edgetopic075 = createEdgeChain(graph, parent, v76, v79, [v82], offsetedgevalue);
+edgetopic076 = createEdgeChain(graph, parent, v76, v79, [v85], offsetedgevalue);
+
+edgetopic081 = createEdgeChain(graph,parent,v86, v87, [v90], offsetedgevalue);
+edgetopic082 = createEdgeChain(graph,parent,v86, v87, [v93], offsetedgevalue);
+edgetopic083 = createEdgeChain(graph,parent,v86, v88, [v91], offsetedgevalue);
+edgetopic084 = createEdgeChain(graph,parent,v86, v88, [v94], offsetedgevalue);
+edgetopic085 = createEdgeChain(graph, parent, v86, v89, [v92], offsetedgevalue);
+edgetopic086 = createEdgeChain(graph, parent, v86, v89, [v95], offsetedgevalue);
+
+edgetopic091 = createEdgeChain(graph,parent,v96, v97, [v100], offsetedgevalue);
+edgetopic092 = createEdgeChain(graph,parent,v96, v97, [v103], offsetedgevalue);
+edgetopic093 = createEdgeChain(graph,parent,v96, v98, [v102], offsetedgevalue);
+edgetopic094 = createEdgeChain(graph,parent,v96, v98, [v104], offsetedgevalue);
+edgetopic095 = createEdgeChain(graph, parent, v96, v99, [v101], offsetedgevalue);
+edgetopic096 = createEdgeChain(graph, parent, v96, v99, [v105], offsetedgevalue);
+
+edgetopic101 = createEdgeChain(graph,parent,v106, v107, [v110], offsetedgevalue);
+edgetopic102 = createEdgeChain(graph,parent,v106, v107, [v113], offsetedgevalue);
+edgetopic103 = createEdgeChain(graph,parent,v106, v108, [v111], offsetedgevalue);
+edgetopic104 = createEdgeChain(graph,parent,v106, v108, [v114], offsetedgevalue);
+edgetopic105 = createEdgeChain(graph, parent, v106, v109, [v112], offsetedgevalue);
+edgetopic106 = createEdgeChain(graph, parent, v106, v109, [v115], offsetedgevalue);
+
+edgetopic111 = createEdgeChain(graph,parent,v116, v117, [v119], offsetedgevalue);
+edgetopic112 = createEdgeChain(graph,parent,v116, v117, [v120], offsetedgevalue);
+edgetopic113 = createEdgeChain(graph,parent,v116, v117, [v122], offsetedgevalue);
+edgetopic114 = createEdgeChain(graph,parent,v116, v117, [v124], offsetedgevalue);
+edgetopic115 = createEdgeChain(graph,parent,v116, v118, [v121], offsetedgevalue);
+edgetopic116 = createEdgeChain(graph,parent,v116, v118, [v123], offsetedgevalue);
+
+        
+        // Combine all edge arrays into one
+        allEdges = [].concat(
+          edgesfa1, edgesfa2, edgesfa3, edgesfa4, 
+          edgesfa5, edgesfa6, edgesfa7, edgesfa8, 
+          edgesfa9, edgesfa10, edgesfa11,
+          edgessubfa11,edgessubfa12,edgessubfa13,edgessubfa14,
+          edgessubfa21,edgessubfa22,edgessubfa23,
+          edgessubfa31,edgessubfa32,edgessubfa33,
+          edgessubfa41,edgessubfa42,edgessubfa43,
+          edgessubfa51,edgessubfa52,edgessubfa53,
+          edgessubfa61,edgessubfa62,edgessubfa63,
+          edgessubfa71,edgessubfa72,edgessubfa73,
+          edgessubfa81,edgessubfa82,edgessubfa83,
+          edgessubfa91,edgessubfa92,edgessubfa93,
+          edgessubfa101,edgessubfa102,edgessubfa103,
+          edgessubfa111,edgessubfa112, 
+          edgetopic011, edgetopic012, edgetopic013, edgetopic014, edgetopic015, edgetopic016, edgetopic017, edgetopic018, 
+          edgetopic021, edgetopic022, edgetopic023, edgetopic024, edgetopic025, edgetopic026, edgetopic027, 
+          edgetopic031, edgetopic032, edgetopic033, edgetopic034, edgetopic035, edgetopic036, edgetopic037, edgetopic038, 
+          edgetopic041, edgetopic042, edgetopic043, edgetopic044, edgetopic045, edgetopic046,
+          edgetopic051, edgetopic052, edgetopic053, edgetopic054, edgetopic055, edgetopic056, edgetopic057, 
+          edgetopic061, edgetopic062, edgetopic063, edgetopic064, edgetopic065, edgetopic066, edgetopic067, 
+          edgetopic071, edgetopic072, edgetopic073, edgetopic074, edgetopic075, edgetopic076,
+          edgetopic081, edgetopic082, edgetopic083, edgetopic084, edgetopic085, edgetopic086,
+          edgetopic091, edgetopic092, edgetopic093, edgetopic094, edgetopic095, edgetopic096,
+          edgetopic101, edgetopic102, edgetopic103, edgetopic104, edgetopic105, edgetopic106,
+          edgetopic111, edgetopic112, edgetopic113, edgetopic114, edgetopic115, edgetopic116
+        );
+
+      }
+      finally {
+        graph.getModel().endUpdate();
+        // Fit the graph to the container
+        graph.fit();
+        graph.view.setScale(1.45); // Adjust 1.0 to a value that displays your graph at the desired size
+
+      }
+
+            
+
+      // Adds animation to edge shape and makes "pipe" visible
+      // Initialize all edges to hidden
+      allEdges.forEach(function(edge) { 
+        makeEdgeAnimated(edge, false); 
+      });
+
+      function makeEdgeAnimated(edge, visible) {
+        var state = graph.view.getState(edge);
+        if (state !== null && state !== undefined) {
+          // Handle visibility of the main edge shape
+          if (visible) {
+            state.shape.node.style.display = '';
+            state.shape.node.style.visibility = 'visible';
+            var paths = state.shape.node.getElementsByTagName('path');
+            if (paths.length > 1) {
+              // Make primary edge path visible and styled
+              paths[0].removeAttribute('visibility');
+              paths[0].style.display = '';
+              paths[0].setAttribute('stroke-width', '6');
+              paths[0].setAttribute('stroke', 'lightGray');
+              // Apply animation class to secondary edge path
+              paths[1].setAttribute('class', 'flow');
+              paths[1].removeAttribute('visibility');
+              paths[1].style.display = '';
+              // Ensure arrowhead is visible
+              var state = graph.view.getState(edge);
+              if (state.shape.marker) {
+                  state.shape.marker.node.style.visibility = 'visible';
+              }
+            }
+          } else {
+            state.shape.node.style.display = 'none';
+            state.shape.node.style.visibility = 'hidden';
+          }
+          // Properly handle the visibility of markers (arrowheads)
+          if (state.shape.marker && state.shape.marker.node) {
+            if (visible) {
+              state.shape.marker.node.style.visibility = 'visible';
+            } else {
+              state.shape.marker.node.style.visibility = 'hidden';
+            }
+          }
+        }
+      }
+      
+      // Enable hover events for cells
+      graph.hoverEnabled = true;
+
+      // Helper function to parse a style string into an object
+      function parseStyle(styleStr) {
+        var result = {};
+        if (styleStr) {
+          var parts = styleStr.split(";");
+          for (var i = 0; i < parts.length; i++) {
+            var keyValue = parts[i].split("=");
+            if (keyValue.length === 2) {
+              result[keyValue[0]] = keyValue[1];
+            }
+          }
+        }
+        return result;
+      }
+
+      var lastHoveredCell = null;
+
+// Helper function to toggle edge visibility for a given array of edges
+function toggleEdgesVisibility(edges, visible) {
+  edges.forEach(function(edge) {
+    makeEdgeAnimated(edge, visible);
+  });
+}
+
+// Hover mapping for Focus Areas and Sub Focus Areas
+var faEdgesMapping = {
+  // Focus Areas (FA)
+  "10": edgesfa1,  // FA1: from v10 to [v11, v12, v13, v14]
+  "22": edgesfa2,  // FA2: from v22 to [v23, v24, v25]
+  "33": edgesfa3,  // FA3: from v33 to [v34, v35, v36]
+  "44": edgesfa4,  // FA4: from v44 to [v45, v46, v47]
+  "54": edgesfa5,  // FA5: from v54 to [v55, v56, v57]
+  "65": edgesfa6,  // FA6: from v65 to [v66, v67, v68]
+  "76": edgesfa7,  // FA7: from v76 to [v77, v78, v79]
+  "86": edgesfa8,  // FA8: from v86 to [v87, v88, v89]
+  "96": edgesfa9,  // FA9: from v96 to [v97, v98, v99]
+  "106": edgesfa10, // FA10: from v106 to [v107, v108, v109]
+  "116": edgesfa11, // FA11: from v116 to [v117, v118]
+
+  // Sub Focus Areas for FA1 (vertices v11, v12, v13, v14)
+  "11": edgessubfa11, // Sub FA 1.1 (attached to v11)
+  "12": edgessubfa12, // Sub FA 1.2 (attached to v12)
+  "13": edgessubfa13, // Sub FA 1.3 (attached to v13)
+  "14": edgessubfa14, // Sub FA 1.4 (attached to v14)
+
+  // Sub Focus Areas for FA2 (vertices v23, v24, v25)
+  "23": edgessubfa21, // Sub FA 2.1 (attached to v23)
+  "24": edgessubfa22, // Sub FA 2.2 (attached to v24)
+  "25": edgessubfa23, // Sub FA 2.3 (attached to v25)
+
+  // Sub Focus Areas for FA3 (vertices v34, v35, v36)
+  "34": edgessubfa31, // Sub FA 3.1 (attached to v34)
+  "35": edgessubfa32, // Sub FA 3.2 (attached to v35)
+  "36": edgessubfa33, // Sub FA 3.3 (attached to v36)
+
+  // Sub Focus Areas for FA4 (vertices v45, v46, v47)
+  "45": edgessubfa41, // Sub FA 4.1 (attached to v45)
+  "46": edgessubfa42, // Sub FA 4.2 (attached to v46)
+  "47": edgessubfa43, // Sub FA 4.3 (attached to v47)
+
+  // Sub Focus Areas for FA5 (vertices v55, v56, v57)
+  "55": edgessubfa51, // Sub FA 5.1 (attached to v55)
+  "56": edgessubfa52, // Sub FA 5.2 (attached to v56)
+  "57": edgessubfa53, // Sub FA 5.3 (attached to v57)
+
+  // Sub Focus Areas for FA6 (vertices v66, v67, v68)
+  "66": edgessubfa61, // Sub FA 6.1 (attached to v66)
+  "67": edgessubfa62, // Sub FA 6.2 (attached to v67)
+  "68": edgessubfa63, // Sub FA 6.3 (attached to v68)
+
+  // Sub Focus Areas for FA7 (vertices v77, v78, v79)
+  "77": edgessubfa71, // Sub FA 7.1 (attached to v77)
+  "78": edgessubfa72, // Sub FA 7.2 (attached to v78)
+  "79": edgessubfa73, // Sub FA 7.3 (attached to v79)
+
+  // Sub Focus Areas for FA8 (vertices v87, v88, v89)
+  "87": edgessubfa81, // Sub FA 8.1 (attached to v87)
+  "88": edgessubfa82, // Sub FA 8.2 (attached to v88)
+  "89": edgessubfa83, // Sub FA 8.3 (attached to v89)
+
+  // Sub Focus Areas for FA9 (vertices v97, v98, v99)
+  "97": edgessubfa91, // Sub FA 9.1 (attached to v97)
+  "98": edgessubfa92, // Sub FA 9.2 (attached to v98)
+  "99": edgessubfa93, // Sub FA 9.3 (attached to v99)
+
+  // Sub Focus Areas for FA10 (vertices v107, v108, v109)
+  "107": edgessubfa101, // Sub FA 10.1 (attached to v107)
+  "108": edgessubfa102, // Sub FA 10.2 (attached to v108)
+  "109": edgessubfa103, // Sub FA 10.3 (attached to v109)
+
+  // Sub Focus Areas for FA11 (vertices v117, v118)
+  "117": edgessubfa111, // Sub FA 11.1 (attached to v117)
+  "118": edgessubfa112,  // Sub FA 11.2 (attached to v118)
+
+           //Topic
+          "15":edgetopic011,"19":edgetopic012,"16":edgetopic013, "20":edgetopic014, "17":edgetopic015, "18":edgetopic016, "125":edgetopic017, "21":edgetopic018, 
+          "26":edgetopic021, "27":edgetopic022, "29":edgetopic023, "30":edgetopic024, "31":edgetopic025, "28":edgetopic026, "32":edgetopic027, 
+          "37":edgetopic031, "38":edgetopic032, "41":edgetopic033, "39":edgetopic034, "126":edgetopic035, "42":edgetopic036, "40":edgetopic037, "43":edgetopic038, 
+          "48":edgetopic041, "51":edgetopic042, "49":edgetopic043, "52":edgetopic044, "50":edgetopic045, "53":edgetopic046,
+          "58":edgetopic051, "61":edgetopic052, "62":edgetopic053, "60":edgetopic054, "63":edgetopic055, "59":edgetopic056, "64":edgetopic057, 
+          "69":edgetopic061, "70":edgetopic062, "74":edgetopic063, "71":edgetopic064, "73":edgetopic065, "72":edgetopic066, "75":edgetopic067, 
+          "80":edgetopic071, "83":edgetopic072, "81":edgetopic073, "84":edgetopic074, "82":edgetopic075, "85":edgetopic076,
+          "90":edgetopic081, "93":edgetopic082, "91":edgetopic083, "94":edgetopic084, "92":edgetopic085, "95":edgetopic086,
+          "100":edgetopic091, "103":edgetopic092, "102":edgetopic093, "104":edgetopic094, "101":edgetopic095, "105":edgetopic096,
+          "110":edgetopic101, "113":edgetopic102, "111":edgetopic103, "114":edgetopic104, "112":edgetopic105, "115":edgetopic106,
+          "119":edgetopic111, "120":edgetopic112, "122":edgetopic113, "124":edgetopic114, "121":edgetopic115, "123":edgetopic116
+
+};
+
+// Hover handling for focus area cells
+graph.container.addEventListener('mousemove', function(evt) {
+  var pt = mxUtils.convertPoint(graph.container, evt.clientX, evt.clientY);
+  var cell = graph.getCellAt(pt.x, pt.y);
+  if (cell !== lastHoveredCell) {
+    // Restore previous cell style
+    if (lastHoveredCell) {
+      graph.model.setStyle(lastHoveredCell, lastHoveredCell.originalStyle || "");
+      if (faEdgesMapping.hasOwnProperty(lastHoveredCell.id)) {
+        toggleEdgesVisibility(faEdgesMapping[lastHoveredCell.id], false);
+      }
+      lastHoveredCell = null;
+    }
+    // Set new hovered cell style
+    if (cell) {
+      if (cell.originalStyle === undefined) {
+        cell.originalStyle = graph.getModel().getStyle(cell);
+      }
+      var newStyle = cell.originalStyle.replace(/fillColor=[^;]*/, "fillColor=#ffff00");
+      graph.model.setStyle(cell, newStyle);
+      lastHoveredCell = cell;
+      // Show animated edges only if this cell is a Focus Area
+      if (faEdgesMapping.hasOwnProperty(cell.id)) {
+        toggleEdgesVisibility(faEdgesMapping[cell.id], true);
+      }
+    }
+  }
+});
+
+        // Ensure edges hide when leaving graph container
+        graph.container.addEventListener('mouseleave', function() {
+        if (lastHoveredCell) {
+            graph.model.setStyle(lastHoveredCell, lastHoveredCell.originalStyle || "");
+            if (faEdgesMapping.hasOwnProperty(lastHoveredCell.id)) {
+            toggleEdgesVisibility(faEdgesMapping[lastHoveredCell.id], false);
+            }
+            lastHoveredCell = null;
+        }
+        });
+
+      const tableHashMap = {
+        //meta
+        "6": { idtype: "metafa", name: "FOCUS AREA", def: "A Focus Area (FA) is a high-level domain or thematic category relevant to ICS safety and/or security (for example, “Governance, Risk, & Compliance” or “Incident Response, Recovery & Resilience”). Think of each Focus Area as one of the major “pillars” that organize complex ICS issues—such as policy-making, network protections, or incident handling—into more manageable topics. This strategic grouping helps stakeholders see the bigger picture, set priorities, and ensure coverage of all critical aspects of ICS security and safety." },
+        "7": { idtype: "metasubfa", name: "SUB FOCUS AREA", def: "A Sub Focus Area refines or further specializes a main Focus Area. Whereas the Focus Area describes a broad category (like “Governance, Risk, & Compliance”), a Sub Focus Area drills down to a more specific set of practices or controls under that broader umbrella. This granularity allows teams to address details that might be too in-depth for the main Focus Area. (Definition to be completed or tailored based on the specific structure of your framework.)" },
+        "8": { idtype: "metasecurity", name: "Security Topic", def: "A Security Topic zeroes in on the specific measures, best practices, or control objectives within the realm of ICS cybersecurity. If a Sub Focus Area organizes certain facets of policy or process, a Security Topic is where you address the real “nuts and bolts”: for instance, application whitelisting, secure remote access, intrusion detection, or encryption methods. (Definition to be elaborated based on the exact use in your framework.)" },
+        "9": { idtype: "metasafety", name: "Safety Topic", def: "A Safety Topic targets the specific hazards, protocols, and operational guidelines that keep an ICS environment safe from accidents, equipment failures, and harm to personnel. While the Focus Area or Sub Focus Area might describe general safety management, a Safety Topic dives into particular controls such as lockout/tagout procedures, alarm management, or hazard identification methods. (Definition to be expanded or adapted according to your organization’s safety requirements.)" },
+        "4": { idtype: "metafa", name: "FOCUS AREA", def: "A Focus Area (FA) is a high-level domain or thematic category relevant to ICS safety and/or security (for example, “Governance, Risk, & Compliance” or “Incident Response, Recovery & Resilience”). Think of each Focus Area as one of the major “pillars” that organize complex ICS issues—such as policy-making, network protections, or incident handling—into more manageable topics. This strategic grouping helps stakeholders see the bigger picture, set priorities, and ensure coverage of all critical aspects of ICS security and safety." },
+        "3": { idtype: "metasubfa", name: "SUB FOCUS AREA", def: "A Sub Focus Area refines or further specializes a main Focus Area. Whereas the Focus Area describes a broad category (like “Governance, Risk, & Compliance”), a Sub Focus Area drills down to a more specific set of practices or controls under that broader umbrella. This granularity allows teams to address details that might be too in-depth for the main Focus Area. (Definition to be completed or tailored based on the specific structure of your framework.)" },
+        "2": { idtype: "metasecurity", name: "Security Topic", def: "A Security Topic zeroes in on the specific measures, best practices, or control objectives within the realm of ICS cybersecurity. If a Sub Focus Area organizes certain facets of policy or process, a Security Topic is where you address the real “nuts and bolts”: for instance, application whitelisting, secure remote access, intrusion detection, or encryption methods. (Definition to be elaborated based on the exact use in your framework.)" },
+        "5": { idtype: "metasafety", name: "Safety Topic", def: "A Safety Topic targets the specific hazards, protocols, and operational guidelines that keep an ICS environment safe from accidents, equipment failures, and harm to personnel. While the Focus Area or Sub Focus Area might describe general safety management, a Safety Topic dives into particular controls such as lockout/tagout procedures, alarm management, or hazard identification methods. (Definition to be expanded or adapted according to your organization’s safety requirements.)" },
+
+        //Focus Areas FA1-FA11
+//Focus Areas FA1-FA11
+"10": {
+  idtype: "1",
+  name: "FA 1: Governance, Risk, and Compliance",
+  def: "Covers the frameworks, policies, and standards that guide ICS security and safety objectives. It includes defining clear governance structures, managing organizational risk (through regular assessments and mitigation strategies), and ensuring compliance with legal and regulatory requirements. By establishing robust controls and accountabilities, this Focus Area helps maintain a consistent, high-level approach to both cybersecurity and operational safety."
+},
+"22": {
+  idtype: "2",
+  name: "FA 2: Asset Management & Configuration Control",
+  def: "Focuses on identifying, classifying, and managing all ICS assets (hardware, software, network components) throughout their lifecycle."
+},
+"33": {
+  idtype: "3",
+  name: "FA 3: ICS Network Architecture & Segmentation",
+  def: "Emphasizes the design and implementation of secure, layered ICS networks. This involves segmenting critical systems from less-trusted zones, setting up demilitarized zones (DMZs), and controlling communication pathways (e.g., conduits) to limit unauthorized access and minimize the spread of threats. Proper network segmentation and zoning also protect safety-critical functions and ensure reliable data flows across ICS environments."
+},
+"44": {
+  idtype: "4",
+  name: "FA 4: Access Control: Authentication & Authorization",
+  def: "Addresses how users and systems gain entry to ICS resources and what privileges they hold once inside. It involves managing identities, enforcing multi-factor authentication, assigning roles with least privilege, and defining physical and logical access rights. Strong access controls help prevent unauthorized changes, insider misuse, and compromises of critical systems."
+},
+"54": {
+  idtype: "5",
+  name: "FA 5: Threat & Vulnerability Management",
+  def: "Involves the continuous identification, monitoring, and assessment of both internal and external threats to ICS environments. It also covers the timely deployment of mitigation measures—such as patching and hardening—to reduce vulnerabilities and prevent potential attacks or disruptions."
+},
+"65": {
+  idtype: "6",
+  name: "FA 6: Incident Response, Recovery & Resilience",
+  def: "Focuses on preparing for, detecting, and responding to security and operational incidents in ICS. It includes creating and testing incident response plans, coordinating response teams, and ensuring robust recovery strategies (e.g., backups, safe shutdowns, system restoration). Building resilience reduces downtime and limits damage from cyber threats, accidents, or natural disasters."
+},
+"76": {
+  idtype: "7",
+  name: "FA 7: Personnel Security & Training",
+  def: "Concentrates on the human element of ICS security and safety. This involves establishing security awareness programs, safety-specific training, insider threat management, and skill development for operators and engineers. By fostering a culture of continuous learning and accountability, organizations reduce errors, enhance threat detection, and maintain safe operational practices."
+},
+"86": {
+  idtype: "8",
+  name: "FA 8: Supply Chain & Third-Party Management",
+  def: "Ensures vendors, contractors, and other external partners meet defined ICS security and safety requirements. This includes conducting vendor assessments, verifying component authenticity, embedding security clauses in contracts, and overseeing third-party compliance. Proper supply chain oversight prevents compromised or unsafe equipment from undermining ICS integrity."
+},
+"96": {
+  idtype: "9",
+  name: "FA 9: Physical & Environmental Security",
+  def: "Addresses the physical safeguards needed to protect ICS facilities and equipment. It includes controlling facility access (e.g., badge systems, security guards), maintaining safe environmental conditions (e.g., temperature and humidity control, surge protection), and securing critical equipment with locked enclosures or tamper-evident seals. These measures protect against unauthorized entry, sabotage, and environmental factors that could threaten ICS operations."
+},
+"106": {
+  idtype: "10",
+  name: "FA 10: Continuous Improvement & Compliance Auditing",
+  def: "Covers ongoing assessment and enhancement of ICS security and safety programs. It includes performing regular audits (internal, external, and third-party), tracking performance metrics, and conducting post-incident reviews to identify gaps or areas for growth. By systematically measuring progress and applying lessons learned, organizations sustain a cycle of continuous improvement and maintain compliance with evolving standards."
+},
+"116": {
+  idtype: "11",
+  name: "FA 11: Hazard Analysis & Accident Factors",
+  def: "Addresses the systematic identification of potential hazards, accident factors, and unsafe conditions within ICS environments. This includes analyzing causes of near-misses or incidents and implementing preventative or corrective measures to uphold safety and reliability."
+},
+
+// Sub Focus Areas
+
+"11": {
+  idtype: "1.1",
+  name: "Policy, Standards & Procedures",
+  def: "Formal documents that establish the rules, guidelines, and operational protocols for ICS. They align with recognized frameworks (e.g., IEC 62443, NIST SP 800-82) and outline how systems should be configured, accessed, and maintained. By clarifying organizational expectations and responsibilities, well-defined policies and procedures minimize confusion, reduce risks, and foster consistent, secure operations."
+},
+"12": {
+  idtype: "1.2",
+  name: "Risk Management & Assessment",
+  def: "Focuses on identifying, evaluating, and prioritizing risks to ICS environments, including both cyber threats (e.g., malware, unauthorized access) and operational hazards (e.g., equipment failures, insider misuse). Structured risk assessments help allocate resources effectively, guiding mitigation strategies to safeguard critical infrastructure and maintain business continuity."
+},
+"13": {
+  idtype: "1.3",
+  name: "Regulatory & Compliance Alignment",
+  def: "Ensures that ICS operations and security measures comply with relevant laws, standards, and industry regulations (e.g., NERC-CIP for power, local HSE regulations for safety). This sub focus area encompasses the documentation, reporting, and audit requirements needed to meet external obligations and maintain a defensible compliance posture."
+},
+"14": {
+  idtype: "1.4",
+  name: "Roles, Responsibilities & Accountability (including clear security roles)",
+  def: "Defines clear lines of authority and accountability for ICS safety and security. It specifies who is responsible for key tasks—such as patch management, incident handling, or safety oversight—and ensures that all stakeholders understand their duties. Clear role delineation prevents gaps, avoids overlap, and speeds up decision-making when incidents occur."
+},
+"23": {
+  idtype: "2.1",
+  name: "ICS Asset Inventory & Classification",
+  def: "Maintaining an accurate, up-to-date list of all ICS components, categorized by criticality or function. A comprehensive asset inventory supports effective risk management, patching, and incident response."
+},
+"24": {
+  idtype: "2.2",
+  name: "Secure Configuration Management & Hardening",
+  def: "Applying secure baseline configurations to ICS devices, disabling unnecessary services/ports, and enforcing least privilege. This reduces the attack surface and helps maintain consistent security across the environment."
+},
+"25": {
+  idtype: "2.3",
+  name: "Lifecycle & Patch Management",
+  def: "Managing ICS assets from procurement through end-of-life, including firmware authenticity checks, patch scheduling, and controlled upgrades. Proper lifecycle management ensures vulnerabilities are addressed while minimizing operational disruption."
+},
+"34": {
+  idtype: "3.1",
+  name: "Network Segmentation & Zoning",
+  def: "Divides ICS networks into distinct zones based on trust levels and functionality, controlling inter-zone communication through conduits or firewalls. This segmentation limits the spread of threats and helps protect critical systems by reducing unnecessary connections or exposure."
+},
+"35": {
+  idtype: "3.2",
+  name: "Secure Communication Protocols",
+  def: "Implements cryptographic and authenticated ICS protocols (e.g., Secure Modbus, DNP3 Secure, OPC UA Security) to ensure data integrity and confidentiality. This mitigates risks from eavesdropping or malicious injection, addressing the inherent insecurity of legacy ICS protocols."
+},
+"36": {
+  idtype: "3.3",
+  name: "Remote Access & Perimeter Security",
+  def: "Establishes strict controls for any external or remote connection to ICS environments. This includes VPNs, jump hosts, firewalls, and monitoring tools to regulate data flow, prevent unauthorized access, and secure critical assets at the network perimeter."
+},
+"45": {
+  idtype: "4.1",
+  name: "Identity & Access Management (IAM)",
+  def: "Encompasses the processes and technologies used to manage the digital identities of users and devices within ICS. IAM ensures that only authorized personnel have the appropriate access rights, including the enforcement of strong authentication methods and periodic reviews of user privileges."
+},
+"46": {
+  idtype: "4.2",
+  name: "Privileged Access Management (PAM)",
+  def: "Focuses on controlling, monitoring, and auditing accounts with elevated privileges. It includes secure credential storage, just-in-time access provisioning, and session monitoring to prevent abuse and reduce insider threats or credential-based attacks on ICS."
+},
+"47": {
+  idtype: "4.3",
+  name: "Physical Access Control",
+  def: "Manages physical entry and exit to ICS facilities and equipment, using methods such as keycards, biometrics, security guards, or surveillance. Restricting unauthorized physical access prevents tampering, theft, and direct manipulation of critical control systems."
+},
+"55": {
+  idtype: "5.1",
+  name: "Threat Intelligence & Continuous Monitoring",
+  def: "Leveraging threat intelligence feeds and real-time monitoring tools to detect emerging threats quickly. Continuous logging and anomaly detection help ICS teams respond before incidents escalate."
+},
+"56": {
+  idtype: "5.2",
+  name: "Vulnerability Assessment & Penetration Testing",
+  def: "Regularly scanning and testing ICS components and configurations to identify weaknesses (e.g., unpatched systems, misconfigurations). Properly planned and executed assessments ensure vulnerabilities are remediated before they can be exploited."
+},
+"57": {
+  idtype: "5.3",
+  name: "Anomaly & Intrusion Detection",
+  def: "Implementing intrusion detection/prevention systems and anomaly detection to spot malicious or unauthorized activities in real time. Behavioral analysis of ICS-specific protocols helps uncover advanced threats and potential insider misuse."
+},
+"66": {
+  idtype: "6.1",
+  name: "Incident Response Planning & Coordination",
+  def: "Establishes a structured approach for detecting, containing, and eradicating security incidents within ICS environments. It includes designating incident response teams, defining communication channels, and conducting periodic drills to ensure rapid, coordinated responses to emergencies."
+},
+"67": {
+  idtype: "6.2",
+  name: "Disaster Recovery & Business Continuity",
+  def: "Focuses on strategies and tools to restore critical ICS operations after disruptive events—whether cyberattacks, equipment failures, or natural disasters. It involves backup systems, redundancy, and contingency planning to minimize downtime and maintain essential services."
+},
+"68": {
+  idtype: "6.3",
+  name: "Cyber-Physical Resilience Measures",
+  def: "Implements safeguards that ensure an ICS can withstand and recover from cyber-physical disruptions. These measures include fail-safe configurations, fallback modes, and robust recovery procedures, reducing the impact of attacks or accidents on critical infrastructure."
+},
+"77": {
+  idtype: "7.1",
+  name: "Security Awareness & Training Programs",
+  def: "Instills a culture of security-mindedness among ICS personnel through formal training, phishing simulations, workshops, and ongoing awareness campaigns. Equips staff to recognize and respond to social engineering, insider threats, and operational security risks."
+},
+"78": {
+  idtype: "7.2",
+  name: "ICS Operator & Engineer Skill Development",
+  def: "Enhances the specialized skills needed for ICS management, covering both technical competencies (e.g., SCADA operation, secure configuration) and safety-critical knowledge (e.g., hazard identification, emergency procedures). Ongoing development ensures staff can keep pace with evolving technologies and threats."
+},
+"79": {
+  idtype: "7.3",
+  name: "Insider Threat Management",
+  def: "Detects and mitigates risks posed by individuals who have legitimate access to ICS but may misuse their privileges. This includes monitoring user behavior, promoting a robust reporting culture, and establishing clear accountability measures to prevent sabotage or negligence."
+},
+"87": {
+  idtype: "8.1",
+  name: "Vendor & Contractor Security Assurance",
+  def: "Ensures third-party vendors and contractors adhere to defined security standards throughout their engagement. It involves vetting external partners, assessing their security posture, and verifying that delivered hardware and software comply with ICS safety and security requirements."
+},
+"88": {
+  idtype: "8.2",
+  name: "Procurement & Contractual Security Requirements",
+  def: "Integrates security clauses and obligations into the procurement process and vendor contracts. By specifying acceptable security practices, incident reporting obligations, and compliance mandates, organizations reduce supply chain risks and ensure consistent protection across all sourced components."
+},
+"89": {
+  idtype: "8.3",
+  name: "Product Integrity & Assurance",
+  def: "Verifies that the ICS hardware, firmware, and software obtained from suppliers are authentic and free from malicious modifications. This includes chain-of-custody documentation, security certifications, and integrity checks to detect tampering or counterfeit parts before deployment."
+},
+"97": {
+  idtype: "9.1",
+  name: "Facility Security Controls",
+  def: "Includes physical barriers, surveillance systems, and on-site security personnel to prevent unauthorized entry into ICS areas. These measures protect critical equipment from tampering, theft, or sabotage and help maintain overall operational integrity."
+},
+"98": {
+  idtype: "9.2",
+  name: "Environmental Protections & Controls",
+  def: "Maintains proper environmental conditions (e.g., temperature, humidity, power stability) to preserve the reliability of ICS equipment. Measures like climate control, surge protection, and emergency power systems help avoid operational disruptions and protect sensitive hardware."
+},
+"99": {
+  idtype: "9.3",
+  name: "Equipment Tamper-Resistance & Integrity",
+  def: "Secures ICS devices and components against unauthorized physical alterations or sabotage. Examples include locked enclosures, tamper-evident seals, and intrusion detection systems, ensuring the integrity of critical control infrastructure remains intact."
+},
+"107": {
+  idtype: "10.1",
+  name: "Security & Safety Audits and Assessments",
+  def: "Involves scheduled internal and external evaluations of ICS to measure adherence to security policies, regulatory standards, and safety guidelines. These audits identify weaknesses, track remediation progress, and ensure continuous compliance."
+},
+"108": {
+  idtype: "10.2",
+  name: "Performance Measurement & Metrics",
+  def: "Defines and monitors key performance indicators (KPIs) for ICS security and safety, such as incident response times, patch compliance, or near-miss rates. These metrics guide data-driven decision-making, highlight areas needing attention, and illustrate progress over time."
+},
+"109": {
+  idtype: "10.3",
+  name: "Continuous Improvement & Lessons Learned",
+  def: "Captures insights from audits, incidents, and near-misses to refine ICS policies, procedures, and technologies. By systematically reviewing what went right or wrong, organizations enhance resilience, close gaps, and maintain up-to-date, effective security and safety programs."
+},
+"117": {
+  idtype: "11.1",
+  name: "Inadequate Enforcement of Constraints (Control Actions)",
+  def: "Situations where ICS constraints (e.g., safety or security rules) are not properly enforced, leading to potential accidents or breaches. This involves ensuring control actions align with actual process states and data integrity is maintained."
+},
+"118": {
+  idtype: "11.2",
+  name: "Inadequate Execution of Control Action",
+  def: "Situations where the correct control actions exist but are not carried out properly or in a timely manner, potentially causing safety or security incidents. Emphasizes the need for robust procedures, operator training, and effective change management."
+},
+       
+       
+        //security and safety topics
+        "15": { idtype: "security", name: "ICS security policies & SOPs", def: "These policies/SOPs govern how ICS components should be configured, accessed, and maintained to prevent unauthorized access or cyber threats. ICS often involves legacy systems or specialized protocols, making them vulnerable if staff use insecure practices (e.g., casual USB use, weak passwords). Clear written policies reduce ambiguity, while SOPs guide day-to-day tasks in a secure manner." },
+        "19": { idtype: "safety", name: "Safety policies aligned with ISA/IEC 61511, EU-OSHA, HSE", def: "Formal safety policies ensure that ICS operations involving high-risk processes, hazardous materials, or critical machinery are performed safely. Standards like ISA/IEC 61511 help design Safety Instrumented Systems, while local regulations mandate protocols for personnel safety. Having these policies in place reduces accident rates and improves response to safety incidents." },
+        "16": { idtype: "security", name: "Alignment with usual ICS security standards [ to date such as IEC 62443, NERC-CIP, NIST SP 800-82 ]", def: "Regular risk assessments identify potential threats (e.g., external hackers, insider threats) and vulnerabilities (e.g., unpatched systems). Frameworks like IEC 62443, NERC-CIP, and NIST SP 800-82 provide structured approaches to ICS cyber risk. Prioritizing these risks ensures resources go to the most critical areas, preventing disruptions." },
+        "20": { idtype: "safety", name: "Hazard ID & risk assessments (HAZOP, STPA)", def: "HAZOP (Hazard and Operability Study) and STPA (Systems-Theoretic Process Analysis) help systematically identify potential process hazards (chemical, mechanical, electrical). By understanding where incidents can occur, organizations prevent accidents and catastrophic failures." },
+        "17": { idtype: "security", name: "Vendor/contractor/supplier compliance checks", def: "ICS environments often depend on multiple external entities (vendors, contractors, suppliers). If these parties fail to follow security standards, they can introduce vulnerabilities. Ensuring these third parties adhere to recognized frameworks mitigates external risk and maintains overall ICS integrity." },
+        "18": { idtype: "security", name: "Documentation & reporting for audits", def: "Many industries operate under strict regulations. Comprehensive documentation—such as network diagrams, system change logs, and incident reports—is essential for internal tracking and satisfying external auditors." },
+        "125": { idtype: "security", name: "Defining clear security roles", def: "Assigning explicit security roles (e.g., ICS Security Officer, IT/OT Cybersecurity Analyst, Incident Commander) ensures accountability and prevents confusion over responsibilities. In real-time ICS, delays or overlaps in duties can lead to downtime or breaches." },
+        "21": { idtype: "safety", name: "Defining clear safety roles", def: "In a critical ICS environment, roles like Safety Officer, Emergency Coordinator, or Shift Supervisor ensure clear safety oversight. Rapid response can be the difference between containment and a severe incident." },
+        "26": { idtype: "security", name: "Comprehensive ICS asset inventories", def: "Maintaining a detailed inventory of all ICS devices, software, and network connections is essential for visibility, security, and incident response. Untracked assets can become blind spots." },
+        "27": { idtype: "security", name: "Secure baseline configurations, lockdown, whitelisting", def: "Having standardized, hardened configurations across ICS reduces risks from default credentials and open ports. Whitelisting ensures only approved software runs." },
+        "29": { idtype: "security", name: "Secure procurement & authorized changes", def: "Ensuring ICS hardware/software comes from trusted sources and that all changes are pre-approved minimizes supply-chain risks and prevents unauthorized modifications." },
+        "30": { idtype: "safety", name: "Fail-safe configurations, maintained SIS", def: "Ensuring Safety Instrumented Systems default to a safe state if a fault occurs. Proper maintenance ensures readiness to handle emergencies." },
+        "31": { idtype: "safety", name: "Safety impact assessment pre-changes", def: "Before implementing any ICS configuration changes, it is critical to assess the potential safety impact to avoid weakening safety features." },
+        "28": { idtype: "security", name: "Firmware authenticity, patch cycles, rollback", def: "ICS often relies on specialized firmware that must be verified for integrity. Regular patch cycles reduce vulnerability windows, and rollback plans are crucial if issues arise." },
+        "32": { idtype: "safety", name: "Device aging & obsolescence planning", def: "Aging or obsolete ICS devices may no longer receive vendor support. Proactive planning ensures critical components are replaced or upgraded before becoming hazardous." },
+        "37": { idtype: "security", name: "Zones/Conduits for segmentation (ISA-62443)\nSecuring ICS systems and OT environments (e.g ISA-62443)\nICS Secure Zoning and Conduit Communication Paths (e.g ISA-62443)", def: "Dividing an ICS network into zones with similar security needs and controlling communication between them reduces attack surfaces and prevents malware spread." },
+        "38": { idtype: "security", name: "Layered nets, DMZ, secure gateways", def: "Using layered networks, DMZs, and secure gateways to isolate ICS from external and enterprise networks helps reduce the risk of unauthorized access." },
+        "39": { idtype: "security", name: "ICS Specific Network Protocol", def: "This refers to communication protocols tailored for ICS environments, ensuring secure data transmission between devices like PLCs, RTUs, and HMIs. Secure versions of traditional protocols, such as Secure Modbus and OPC UA Security, offer encryption, authentication, and integrity checks to prevent unauthorized access and data manipulation. These protocols are essential because traditional ICS protocols were not designed with cybersecurity in mind, making them vulnerable to interception and manipulation without proper security enhancements." },
+        "41": { idtype: "safety", name: "Network supports safety-critical signal delivery", def: "Ensures that the network reliably transmits signals related to safety functions (e.g., emergency shutdowns), which is essential for preventing accidents and protecting personnel." },
+        "35": { idtype: "security", name: "ICS-specific network protocols (e.g., Secure Modbus, DNP3, OPC UA Sec)", def: "Communication protocols tailored for ICS environments that offer encryption, authentication, and integrity checks to prevent unauthorized access and data manipulation." },
+        "126": { idtype: "security", name: "ICS communication protocol hardening", def: "Configuring ICS communication protocols to minimize vulnerabilities by disabling unused features, enforcing strict authentication and encryption, and monitoring for unusual patterns." },
+        "42": { idtype: "safety", name: "Redundant, fault-tolerant communication paths", def: "Using multiple, independent communication paths ensures critical safety signals can still be transmitted if one path fails." },
+        "40": { idtype: "security", name: "Protocol whitelists, data flow control, remote restrictions", def: "Limiting remote access to ICS networks by allowing only approved protocols and controlling data flow helps prevent unauthorized access and cyberattacks." },
+        "43": { idtype: "safety", name: "Preventing unsafe remote overrides", def: "Prevents remote users from executing unsafe commands or bypassing safety functions without proper authorization, reducing risks of equipment damage or production disruption." },
+        "48": { idtype: "security", name: "Role-based permissions, MFA, and timeouts", def: "Controlling access based on user roles, using MFA, and enforcing session timeouts reduce the risk of unauthorized access and misuse." },
+        "49": { idtype: "safety", name: "Privileged account monitoring and port control", def: "Monitoring accounts with elevated privileges and controlling port access help prevent unauthorized actions and maintain system integrity." },
+        "51": { idtype: "security", name: "Lockout/tagout for safe operations", def: "Procedures ensuring equipment is safely de-energized during maintenance to prevent accidental activation and protect personnel." },
+        "52": { idtype: "safety", name: "Safe authorization in hazardous areas", def: "Controlling access to hazardous areas ensures that only trained personnel can enter, reducing the risk of injury or equipment tampering." },
+        "50": { idtype: "security", name: "Physical access (badging, biometrics)", def: "Using identification methods like keycards or biometrics to restrict facility access helps prevent unauthorized physical access to ICS hardware." },
+        "53": { idtype: "safety", name: "Aligning physical/logical access with SIS", def: "Ensuring that physical access to areas with Safety Instrumented Systems is aligned with digital access permissions to prevent unauthorized modifications." },
+        "58": { idtype: "security", name: "Continuous ICS monitoring, anomaly detection", def: "Real-time visibility into network traffic and device behavior is crucial for detecting abnormal patterns early, especially since ICS protocols differ from typical IT protocols." },
+        "61": { idtype: "security", name: "Threat intelligence feeds, centralized logging", def: "Subscribing to ICS-specific threat feeds and centralizing logs helps anticipate emerging attack vectors and allows faster detection and response to suspicious activity." },
+        "62": { idtype: "safety", name: "Monitor safety events and integrate near-misses", def: "Analyzing safety-related data (like minor alarms or near-misses) alongside security events can reveal unsafe trends or potential issues." },
+        "60": { idtype: "security", name: "Vulnerability assessments (all device types)", def: "Systematic identification of ICS vulnerabilities helps prioritize mitigation. Specialized scanning and pen testing tools must be used carefully to avoid disruption." },
+        "63": { idtype: "safety", name: "Evaluate vulnerabilities compromising fail-safes", def: "Any vulnerability that could bypass safety systems has a direct impact on safety. Prompt identification and resolution are critical." },
+        "59": { idtype: "security", name: "Inline intrusion prevention and behavior analysis", def: "Inline systems block malicious traffic automatically, and behavior analysis detects novel or zero-day attacks based on deviations from normal operations." },
+        "64": { idtype: "safety", name: "Anomaly detection for unsafe trends", def: "Monitoring process parameters for unusual patterns helps detect unsafe operating conditions early, preventing potential damage or injuries." },
+        "69": { idtype: "security", name: "ICS IR teams, drills, and schedules", def: "Dedicated incident response teams, regular drills, and scheduled simulations help ensure quick, coordinated responses to cyber incidents." },
+        "70": { idtype: "security", name: "Communication playbooks, escalation, and forensics", def: "Predefined procedures for notifying stakeholders, escalating incidents, and coordinating with teams; forensics help analyze root causes." },
+        "74": { idtype: "safety", name: "Engagement of safety experts in IR and recovery planning", def: "Involving safety experts in incident response ensures that safety-critical systems are prioritized during and after incidents." },
+        "71": { idtype: "security", name: "Network isolation, safe shutdown, and malware removal", def: "Isolating compromised segments, performing safe shutdowns, and removing malware limit the impact of cyberattacks and protect equipment and data." },
+        "73": { idtype: "safety", name: "Emergency shutdown and evacuation procedures", def: "Protocols for safely shutting down equipment and evacuating personnel during emergencies are essential to protect lives and comply with regulations." },
+        "72": { idtype: "security", name: "Restore from backups, root-cause analysis, and improvements", def: "Restoring systems from backups, analyzing incident causes, and implementing improvements help minimize data loss and reduce future risks." },
+        "75": { idtype: "safety", name: "Lessons learned for continuous improvement in response", def: "Analyzing incidents to improve emergency response and safety protocols ensures better management of future incidents." },
+        "80": { idtype: "security", name: "Security culture initiatives (awareness sessions, phishing training)", def: "Programs designed to instill a strong security mindset among ICS personnel reduce human-related vulnerabilities." },
+        "83": { idtype: "safety", name: "Safety training (hazard ID, logout procedures, HMI navigation)", def: "Training on hazard identification, proper logout procedures, and safe HMI interaction minimizes workplace accidents and ensures compliance." },
+        "81": { idtype: "security", name: "Encouraging incident reporting and sharing of good practices", def: "Creating a culture of proactive incident reporting helps improve response strategies and prevent recurring issues." },
+        "84": { idtype: "safety", name: "ICS SOPs, credential policies, and remote restrictions", def: "Ensuring operators follow SOPs, maintain strict credentials, and adhere to remote restrictions protects both personnel and critical systems." },
+        "82": { idtype: "security", name: "Scenario-based drills, ICS certifications, and cross-training", def: "Conducting realistic drills, requiring certifications, and promoting cross-training help detect and mitigate insider threats." },
+        "85": { idtype: "safety", name: "Hands-on workshops for operator safety skills", def: "Practical training sessions where operators practice emergency shutdowns and hazard responses help reduce human error and enhance safety." },
+        "90": { idtype: "security", name: "Vendor assessment and authenticity checks", def: "Evaluating vendors to ensure they meet cybersecurity requirements and verifying product authenticity helps prevent supply-chain attacks." },
+        "93": { idtype: "safety", name: "Ensuring third-party equipment meets safety standards", def: "Verifying that equipment supplied by third parties complies with safety standards is essential to prevent malfunctions and hazards." },
+        "91": { idtype: "security", name: "Secure procurement practices and contractual clauses", def: "Including cybersecurity requirements in procurement processes and contracts helps protect ICS systems from supply-chain vulnerabilities." },
+        "94": { idtype: "safety", name: "Contractor training and compliance monitoring", def: "Ensuring that contractors receive proper safety training and follow established protocols minimizes risks during system work." },
+        "92": { idtype: "security", name: "Third-party risk management and trusted supply chains", def: "Assessing and mitigating cybersecurity risks from third-party vendors ensures that only secure components enter ICS environments." },
+        "95": { idtype: "safety", name: "Safe sourcing of safety-critical parts", def: "Sourcing safety-critical components from certified suppliers prevents equipment failure and ensures reliable operation during emergencies." },
+        "100": { idtype: "security", name: "Facility access controls, perimeter sensors, and security guards", def: "Using physical security measures like badge-controlled entry and on-site guards prevents unauthorized access to ICS facilities." },
+        "103": { idtype: "safety", name: "Safe emergency evacuation routes", def: "Planning and maintaining well-marked evacuation routes ensures personnel can quickly exit during emergencies." },
+        "102": { idtype: "security", name: "Climate regulation, surge protection, and backup systems", def: "Maintaining stable environmental conditions and backup power ensures continuous operation during power disturbances." },
+        "104": { idtype: "safety", name: "Maintaining a proper environment that prevents failures", def: "Ensuring that humidity, dust, and air quality are controlled helps prevent equipment malfunctions and enhances safety." },
+        "101": { idtype: "security", name: "Locked enclosures and tamper-evident seals", def: "Securing ICS hardware within locked enclosures and applying tamper-evident seals protects sensitive components from tampering and theft." },
+        "105": { idtype: "safety", name: "Assurance that safety functions are not compromised", def: "Verifying that security measures do not interfere with safety-critical systems ensures proper emergency response." },
+        "110": { idtype: "security", name: "Regular internal, external, and third-party audits", def: "Scheduled audits by internal teams, external consultants, or third-party assessors help identify vulnerabilities and ensure regulatory compliance." },
+        "113": { idtype: "safety", name: "Safety audits, incident tracking, and hazard reviews", def: "Systematic reviews of safety practices and incident tracking improve workplace safety by identifying and correcting hazards." },
+        "111": { idtype: "security", name: "Security metrics and maturity measures", def: "Tracking KPIs such as incident response times and policy compliance helps organizations gauge and enhance their cybersecurity maturity." },
+        "114": { idtype: "safety", name: "Incorporating safety lessons into policies", def: "Continuously updating safety policies based on past incidents and audit findings helps prevent repeat incidents and fosters a proactive safety culture." },
+        "112": { idtype: "security", name: "Post-incident reviews, documentation, and reporting", def: "Structured reviews after incidents to analyze root causes and implement corrective actions improve future response strategies." },
+        "115": { idtype: "safety", name: "Ongoing improvement of safety systems", def: "Continuous refinement of safety systems based on audits and incident reports ensures that safety measures stay effective and aligned with evolving risks." },
+        "119": { idtype: "security", name: "Protecting process models with secure feedback mechanisms", def: "Ensuring the authenticity and integrity of sensor data prevents unsafe decisions if feedback is tampered with." },
+        "120": { idtype: "security", name: "Securing sensors and communications that impact hazards", def: "Protecting ICS sensors from external tampering or unauthorized access prevents false alarms and hidden critical warnings." },
+        "122": { idtype: "safety", name: "Conducting STPA and HAZOP for hazard identification and mitigation", def: "Systematic analysis techniques (STPA, HAZOP) help identify where control actions may fail to enforce safety constraints." },
+        "121": { idtype: "security", name: "Aligning configuration management with hazard mitigation measures", def: "Vetting ICS configuration changes against hazard analyses prevents misconfigurations that could weaken safety or security controls." },
+        "123": { idtype: "safety", name: "Ensuring proper enforcement of safety constraints", def: "Making sure that safety limits are consistently enforced helps prevent accidents due to procedure gaps or technical malfunctions." },
+        "124": { idtype: "security", name: "Addressing Comm Flaws, Actuator Fails,Timing Lags", def: "Identifies and mitigates security and reliability risks arising from communication disruptions, actuator malfunctions, or timing delays within ICS. Unaddressed, these flaws may result in incorrect control actions, downtime, or security breaches. Implementing robust error detection, redundancy, and real-time monitoring ensures stable operations and protects critical processes." },
+
+      };
+
+        function removeUnicodeAndCleanString(input) {
+            let output = "";
+            for (let char of input) {
+            const code = char.codePointAt(0);
+            // Convert Mathematical Bold Capital Letters (𝐀 to 𝐙)
+            if (code >= 0x1D400 && code <= 0x1D419) {
+                output += String.fromCharCode(code - 0x1D400 + 65);
+            }
+            // Convert Mathematical Bold Lowercase Letters (𝐚 to 𝐳)
+            else if (code >= 0x1D41A && code <= 0x1D433) {
+                output += String.fromCharCode(code - 0x1D41A + 97);
+            }
+            // Convert Mathematical Bold Digits (𝟎 to 𝟗)
+            else if (code >= 0x1D7CE && code <= 0x1D7D7) {
+                output += String.fromCharCode(code - 0x1D7CE + 48);
+            }
+            else {
+                output += char;
+            }
+            }
+            return cleanString(output);
+        }
+
+
+        /**
+         * Creates simple direct edges from a single source to an array of targets.
+         *
+         * @param {object} graph - The mxGraph instance.
+         * @param {object} parent - The parent cell/container.
+         * @param {object} source - The source vertex for all edges.
+         * @param {Array} targets - An array of target vertices.
+         * @returns {Array} An array of inserted edges.
+         */
+        function createEdges(graph, parent, source, targets) {
+        const basicStyle = 'strokeWidth=3;endArrow=block;endSize=2;endFill=1;strokeColor=black;rounded=1;';
+        return targets.map(target => graph.insertEdge(parent, null, '', source, target, basicStyle));
+        }
+
+
+        /**
+         * Creates a chain of edges starting with a main edge and then one or more elbow connector edges.
+         *
+         * @param {object} graph - The mxGraph instance.
+         * @param {object} parent - The parent cell/container.
+         * @param {object} mainSource - The source vertex for the main (non-elbow) edge.
+         * @param {object} chainVertex - The vertex that is the target of the main edge and the source for the elbow edges.
+         * @param {Array} targets - An array of target vertices for the elbow edges.
+         * @param {number} offset - The offset value used to compute the x-coordinate for the geometry points.
+         * @param {function} [computeX] - Optional. A function(chainVertex, previousTarget, currentTarget, offset) that returns the x-coordinate.
+         *                                If not provided, defaults to (chainVertex.geometry.x - offset).
+         *
+         * @returns {Array} An array of inserted edges (the first element is the main edge, followed by the elbow edges).
+         */
+        function createEdgeChain(graph, parent, mainSource, chainVertex, targets, offset, computeX) {
+        // Define the style strings.
+        const basicStyle = 'strokeWidth=3;endArrow=block;endSize=2;endFill=1;strokeColor=black;rounded=1;';
+        const elbowStyle = basicStyle +
+            'entryX=0;entryY=0.5;exitX=0;exitY=0.5;' +
+            'edgeStyle=mxEdgeStyle.ElbowConnector;curved=100;curvedSpacing=200;perimeterSpacing=10;exitPerimeter=1;entryPerimeter=1;';
+        const edges = [];
+        
+        // Insert the main edge.
+        const mainEdge = graph.insertEdge(parent, null, '', mainSource, chainVertex, basicStyle);
+        edges.push(mainEdge);
+        
+        // Array to accumulate all geometry points.
+        const accumulatedPoints = [];
+        
+        // Loop over each target to create elbow edges.
+        targets.forEach((target, index) => {
+            // Insert an elbow edge from the chain vertex to the current target.
+            const edge = graph.insertEdge(parent, null, '', chainVertex, target, elbowStyle);
+            
+            // Compute the x-coordinate:
+            // If computeX is provided, call it with the chain vertex, the previous target (or null), current target, and offset.
+            // Otherwise, default to using chainVertex.geometry.x - offset.
+            const xCoord = computeX
+            ? computeX(chainVertex, index === 0 ? null : targets[index - 1], target, offset)
+            : (chainVertex.geometry.x - offset);
+            
+            // Create a new geometry point using the computed x and the target’s y coordinate.
+            const newPoint = new mxPoint(xCoord, target.geometry.y);
+            
+            // Add the new point to the accumulated list.
+            accumulatedPoints.push(newPoint);
+            
+            // Set the geometry points of the current edge to a copy of the accumulated points.
+            edge.geometry.points = accumulatedPoints.slice();
+            
+            edges.push(edge);
+        });
+        
+        return edges;
+        }
+
+
+      function cleanString(str) {
+        return str
+          .normalize("NFKC")
+          .replace(/[\n\r\t]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      
+      // When a vertex is clicked, alert with the vertex text (its label)
+      graph.addListener(mxEvent.CLICK, function(sender, evt) {
+        var cell = evt.getProperty('cell');
+        if (cell != null) {
+          alert("ID: " + cell.id +
+                "\nValue: " + removeUnicodeAndCleanString(cell.value) +
+                "\nDefinition: " + tableHashMap[cell.id].def);
+        }
+      });
+    }
+
+
+
+
+
+
+  </script>
+
+</head>
+<body onload="main(document.getElementById('graphContainer'))">
+    <h2>ICS Taxonomy --- Qualtrics Form</h2>
+
+
+    <p>
+      <a class="btn btn-primary show "  data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">How to use this page?</a>
+            <!-- Help button -->
+     <button id="helpBtn" class="button" style="vertical-align:middle"> <span>[Help] Discover Taxonomy Modal in Same Page</span></button>
+<!-- New button to open modal content in a new window -->
+<button id="newWindowBtn" class="button" style="vertical-align:middle"> <span>[Help] Discover Taxonomy in New Page</span></button>
+    </p>
+
+    <div class="row">
+      <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+          <div class="card card-body">
+   <!-- Instructions for Users -->
+   <div id="instructions" style="margin: 20px; padding: 10px; background-color: #f2f2f2; border: 1px solid #ccc;">
+    <h3>How to Use This Page</h3>
+        <p>
+          Welcome to the ICS Taxonomy page. 
+          Use the embedded Google Form below to submit your responses. <br>
+          Click the <strong>[Help] Discover Taxonomy Modal</strong> button to open a modal window with an interactive taxonomy diagram. <br>
+          You can also click the <strong>[Help] Open Taxonomy in New Page</strong> button to view the taxonomy in a separate window. <br>
+          To close the help modal, click the <strong>&times;</strong> (close) button, press the <strong>Escape</strong> key, or click outside the modal area.<br>
+          Additionally, you can press the <strong>g</strong> key twice quickly to toggle the help modal.
+        </p>
+      </div></div>
+        </div>
+      </div>
+     
+    </div>
+
+
+
+
+
+      <iframe id="googleForm"  src="https://bgu.qualtrics.com/jfe/form/SV_bNQisCkSZq3iaA6" style="width:100%; height:100vh; border:none;"></iframe>
+
+
+  <!-- The Modal -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Taxonomy Diagram</h2>
+      <p>Here is some detailed on the ICS Taxonomy. Click on cells to find more definition or you can get help here on:
+        <a class="btn btn-primary show "  data-bs-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2">How to use this taxonomy?</a>
+      </p>
+
+
+      <div class="row">
+        <div class="col">
+          <div class="collapse multi-collapse" id="multiCollapseExample2">
+            <div class="card card-body">
+     <!-- Instructions for Users -->
+     <div id="instructions" style="margin: 20px; padding: 10px; background-color: #f2f2f2; border: 1px solid #ccc;">
+          <p>
+          
+    <main>
+      <section class="mb-4">
+        <h3>How to use this taxonomy?</h3>
+        <p>
+          The diagram is fully interactive, so you can explore it by simply hovering over or clicking on any of the nodes. Here is a quick guide:
+        </p>
+      </section>
+
+      <section class="mb-4">
+        <h4>How to Interact</h4>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Hover Over a Node:</strong> When you move your mouse over any focus area or sub-topic (node), its background color changes (turns yellow) to indicate it is active. At the same time, the connecting edges (the “chains”) light up with a subtle animation. This visual cue shows you which elements are directly related.
+          </li>
+          <li class="list-group-item">
+            <strong>Click a Node:</strong> Clicking on any node triggers a pop-up (an alert) that displays:
+            <ul class="list-group list-group-flush mt-2">
+              <li class="list-group-item">The ID of the element</li>
+              <li class="list-group-item">The Label (or title) of the topic</li>
+              <li class="list-group-item">Its Definition</li>
+            </ul>
+            The definitions are stored in a lookup table (a hash map) within the code, so every node is paired with an explanation that tells you more about what it represents within the ICS taxonomy.
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-4">
+        <h4>What the Colours Represent</h4>
+        <p>
+          <strong>Colour Coding:</strong> Different colours on the nodes (for both main focus areas and sub-topics) are used to group related topics visually. For example:
+        </p>
+        <ul class="list-group">
+          <li class="list-group-item">Main focus areas (like “FA 1: Governance, Risk, and Compliance”) have their distinct colour palette.</li>
+          <li class="list-group-item">Sub-focus areas use varying shades (for instance, warm tones like oranges and yellows versus cooler tones) to differentiate between aspects such as policies, risk assessments, and compliance checks.</li>
+        </ul>
+        <p>
+          These colours help you quickly identify the nature of each topic—whether it is leaning more towards security or safety, for instance.
+        </p>
+      </section>
+
+      <section class="mb-4">
+        <h4>What the Chains of Edges Represent</h4>
+        <p>
+          <strong>Hierarchical Relationships:</strong> The edges (or “chains”) that connect the nodes are not random—they show how different parts of the taxonomy are related.
+        </p>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Direct Edges:</strong> These link a main focus area directly to its sub-topics.</li>
+          <li class="list-group-item">
+            <strong>Chained (Elbow) Edges:</strong> Some edges form a chain (using elbow connectors) that represents a deeper, multi-level relationship. This visually indicates how a broad topic (like a focus area) branches into more detailed sub-topics, which in turn might have further detailed aspects.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <p>
+          In short, the interactive diagram uses hover effects and click events to let you explore each topic and its definition, while the colours and chains of edges provide visual cues about how topics are grouped and interrelated. Enjoy navigating and discovering the structure of the ICS taxonomy!
+        </p>
+      </section>
+    </main>         </p>
+        </div></div>
+          </div>
+        </div>
+       
+      </div>
+
+
+
+
+      <div id="graphContainer"></div>
+    </div>
+  </div>
+
+ 
+    
+</div>
+
+
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var modal = document.getElementById("helpModal");
+      var btn = document.getElementById("helpBtn");
+      var span = document.getElementsByClassName("close")[0];
+  
+      btn.onclick = function() {
+        modal.style.display = "block";
+      };
+
+
+
+      // Variable to store the timestamp of the last 'g' key press
+let lastGKeyTime = 0;
+      document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") { // Check if the pressed key is Escape
+    var modal = document.getElementById("helpModal");
+    modal.style.display = "none";
+  }
+  
+
+
+// Check if the "g" key was pressed (case-insensitive)
+if (event.key.toLowerCase() === "g") {
+    const now = Date.now();
+    // If the previous "g" was pressed within 500ms, toggle the modal
+    if (now - lastGKeyTime < 500) {
+      const modal = document.getElementById("helpModal");
+      modal.style.display = (modal.style.display === "block") ? "none" : "block";
+      // Reset the timestamp so that a subsequent "g" doesn't immediately retrigger
+      lastGKeyTime = 0;
+    } else {
+      lastGKeyTime = now;
+    }
+  }
+
+
+
+
+});
+
+
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      };
+  
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    });
+
+
+
+    document.getElementById("newWindowBtn").addEventListener("click", function(){
+  window.open("help.html", "_blank");
+});
+
+
+
+  </script>
+
+</body>
+</html>
