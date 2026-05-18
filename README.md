@@ -1,45 +1,24 @@
-# IC3SA / ARES SecIndustry 2026 submission package
+# IC3SA Taxonomy — Materials
 
-LNCS-formatted workshop paper for **ARES 2026 / 5th Workshop on Cybersecurity
-in Industry 4.0 and Beyond (SecIndustry)**. Page limit: 18 pages including
-references; double-blind. Current PDF: **18 pages**.
+Supplementary materials for the IC3SA Taxonomy paper, submitted to the **5th Workshop on Cybersecurity in Industry 4.0 and Beyond (SecIndustry)** at **ARES 2026**.
 
 ## Contents
 
-| File | Purpose |
-|---|---|
-| `mainsecind.tex` | LaTeX source (LNCS class, `llncs.cls`) |
-| `mybib.bib` | 34 BibTeX entries (style: `splncs04`) |
-| `mainsecind.pdf` | Compiled paper (for sanity-check) |
-| `figures/` | Two figures actually referenced (`conceptpm.png`, `methodo.png`) |
-| `IC3SA_Taxonomy_Construction_Methodology__5_.xlsx` | Supplementary workbook (Stages 1–5, 12 sheets), cited in the paper as `\cite{ic3sa_workbook}` |
+- **[IC3SA_Taxonomy_Construction_Methodology__5_.xlsx](https://github.com/icstaxonomy-web/icstaxonomy/blob/main/IC3SA_Taxonomy_Construction_Methodology__5_.xlsx)** — the construction-and-validation workbook cited in the paper as `\cite{ic3sa_workbook}`. Single `.xlsx` with twelve sheets across five stages:
+  - Stage 1 — sources catalogue (sheet 1)
+  - Stage 2 — ontology construction artifacts (sheets 2–7)
+  - Stage 3 — 148-row first-iteration taxonomy with KAB decomposition and worked examples (sheets 8–9)
+  - Stage 4 — validation rounds, instrument, and per-FA Likert results (sheet 10)
+  - Stage 5 — next-iteration backlog: competency questions, Ontology-101 self-audit, deferred overlaps, and stakeholder suggestions (sheet 11)
 
-## Build instructions
+- **[AnonymousWebTaxonomy/](AnonymousWebTaxonomy)** — source for the interactive web navigator deployed at **[icstaxonomy.web.app](https://icstaxonomy.web.app/help.html)**. The navigator was part of our methodology: it integrates the survey instrument with hover- and click-revealed taxonomy definitions for every Focus Area, Sub-Focus Area, Topic, and KAB component, and was used in the Round 1–3 validation sessions.
 
-Requires `texlive-publishers` (for `llncs.cls`) and `texlive-latex-extra`.
+## Web navigator
 
-```bash
-pdflatex mainsecind
-bibtex   mainsecind
-pdflatex mainsecind
-pdflatex mainsecind
-```
+The live navigator: **https://icstaxonomy.web.app/help.html**
 
-## Anonymity notes (for submission)
+It exposes the full hierarchy (11 Focus Areas → 33 Sub-Focus Areas → 74 paired safety/security topics → 148 KAB rows) and the topic-level mapping to IEC 62443, ISA/IEC 61511, NIST CSF 2.0, and NIST SP 800-82r3.
 
-- Title block uses `\author{Anonymous Authors}`; real author block is
-  commented out in the source.
-- Acknowledgments are masked ("omitted for double-blind review").
-- The supplementary workbook (`ic3sa_workbook`) and the web navigator
-  (`icstaxonomy`) are both hosted under anonymized identities — the URLs
-  in `mybib.bib` point to the anonymous accounts you set up.
-- The author block, full acknowledgments, and any non-anonymous URLs
-  should be restored at camera-ready.
+## Citation
 
-## Known minor items
-
-- The InCReASE and Bitton bibliography entries list co-author surnames in
-  their metadata. The body wording is third-person and does not flag the
-  references as self-citations; you've accepted this risk per discussion.
-- Four `Overfull \hbox` warnings of 15–27pt remain in long paragraphs;
-  cosmetic, no visible margin overflow.
+To be added after publication in the ARES 2026 / Springer LNCS proceedings.
